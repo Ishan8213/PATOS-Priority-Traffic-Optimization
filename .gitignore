@@ -1,0 +1,47 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environment
+venv/
+.venv/
+
+# Environment variables / secrets
+.env
+.env.*
+*.key
+*.pem
+secrets/
+credentials/
+
+# Azure secrets
+azure/.env
+azure/*credentials*
+azure/*connection*
+azure/*secret*
+
+# Large media files
+*.mp4
+*.avi
+*.mov
+*.mkv
+
+# Generated/local data
+data/cloud_storage/
+data/blob_storage/
+data/sql_ready/
+
+# Model files
+*.pt
+*.onnx
+
+# Streamlit
+.streamlit/secrets.toml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# VS Code
+.vscode/

@@ -1,0 +1,27 @@
+{
+    "location": "Intersection_01",
+    "traffic_density": "HIGH",
+    "vehicle_id": "AMB-001",
+    "vehicle_type": "AMBULANCE",
+    "priority_level": "CRITICAL",
+    "authorized": true,
+    "priority_action": "IMMEDIATE_SIGNAL_PRIORITY",
+    "signal_recommendations": [
+        {
+            "intersection": "Intersection_01",
+            "action": "GREEN_PRIORITY"
+        },
+        {
+            "intersection": "Intersection_02",
+            "action": "GREEN_PRIORITY"
+        },
+        {
+            "intersection": "Intersection_03",
+            "action": "GREEN_PRIORITY"
+        },
+        {
+            "intersection": "Intersection_04",
+            "action": "GREEN_PRIORITY"
+        }
+    ]
+}

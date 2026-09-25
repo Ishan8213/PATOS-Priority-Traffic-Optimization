@@ -1,0 +1,32 @@
+[
+    {
+        "scenario": "Normal Traffic",
+        "traffic_density": "LOW",
+        "predicted_congestion": "LOW",
+        "priority_level": "NORMAL",
+        "priority_action": "NORMAL_OPERATION",
+        "signal_action": "NORMAL_OPERATION",
+        "green_time": 30,
+        "red_time": 30
+    },
+    {
+        "scenario": "High Congestion",
+        "traffic_density": "HIGH",
+        "predicted_congestion": "HIGH",
+        "priority_level": "NORMAL",
+        "priority_action": "NORMAL_OPERATION",
+        "signal_action": "HIGH_CONGESTION_OPTIMIZATION",
+        "green_time": 60,
+        "red_time": 30
+    },
+    {
+        "scenario": "Critical Ambulance Priority",
+        "traffic_density": "MEDIUM",
+        "predicted_congestion": "MEDIUM",
+        "priority_level": "CRITICAL",
+        "priority_action": "IMMEDIATE_SIGNAL_PRIORITY",
+        "signal_action": "GREEN_PRIORITY",
+        "green_time": 60,
+        "red_time": 15
+    }
+]

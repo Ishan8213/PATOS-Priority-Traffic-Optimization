@@ -1,0 +1,9 @@
+{
+    "location": "Intersection_01",
+    "traffic_density": "HIGH",
+    "predicted_congestion": "MEDIUM",
+    "priority_action": "IMMEDIATE_SIGNAL_PRIORITY",
+    "signal_action": "GREEN_PRIORITY",
+    "recommended_green_time": 60,
+    "recommended_red_time": 15
+}

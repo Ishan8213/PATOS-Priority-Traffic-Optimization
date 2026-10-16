@@ -97,8 +97,14 @@ signal_record = {
         "signal_action",
         "NORMAL_OPERATION"
     ),
-    "green_time": signal.get("green_time", 30),
-    "red_time": signal.get("red_time", 30),
+    "green_time": signal.get(
+        "green_time",
+        signal.get("recommended_green_time", 30)
+    ),
+    "red_time": signal.get(
+        "red_time",
+        signal.get("recommended_red_time", 30)
+    ),
     "predicted_congestion": congestion.get(
         "predicted_congestion",
         "UNKNOWN"
@@ -130,7 +136,7 @@ with open(output_file, "w") as file:
     json.dump(records, file, indent=4)
 
 
-print("SQL data preparation completed.")
+print("PostgreSQL-compatible SQL data preparation completed (local only).")
 print(f"SQL-ready data saved to: {output_file}")
 
 print("\nTraffic Record:")

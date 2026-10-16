@@ -1,81 +1,42 @@
-from ultralytics import YOLO
-import cv2
 import json
+import sys
 from datetime import datetime
+from pathlib import Path
+
+import cv2
+from ultralytics import YOLO
 
 
-model = YOLO("yolov8n.pt")
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(PROJECT_ROOT))
 
-video_path = "data/traffic.mp4"
-
-cap = cv2.VideoCapture(video_path)
-
-if not cap.isOpened():
-    print("ERROR: Could not open traffic video.")
-    exit()
+from edge.runtime_config import display_video_enabled, project_path
 
 
-vehicle_classes = {
+MODEL_PATH = project_path("PATOS_YOLO_MODEL_PATH", "yolov8n.pt")
+VIDEO_PATH = project_path("PATOS_VIDEO_PATH", "data/traffic.mp4")
+OUTPUT_PATH = project_path("PATOS_TRAFFIC_OUTPUT_PATH", "data/traffic_data.json")
+WINDOW_NAME = "PATOS - YOLO Vehicle Tracking"
+VEHICLE_CLASSES = {
     2: "car",
     3: "motorcycle",
     5: "bus",
-    7: "truck"
+    7: "truck",
 }
 
 
-unique_vehicle_ids = set()
-car_ids = set()
-motorcycle_ids = set()
-bus_ids = set()
-truck_ids = set()
-
-
-cv2.namedWindow(
-    "PATOS - YOLO Vehicle Tracking",
-    cv2.WINDOW_NORMAL
-)
-
-cv2.resizeWindow(
-    "PATOS - YOLO Vehicle Tracking",
-    1280,
-    720
-)
-
-
-# ==========================================
-# Clean text with black background
-# ==========================================
-
-def draw_text(
-    image,
-    text,
-    position,
-    scale,
-    color,
-    thickness=2
-):
-
+def draw_text(image, text, position, scale, color, thickness=2):
     font = cv2.FONT_HERSHEY_SIMPLEX
-
-    (w, h), baseline = cv2.getTextSize(
-        text,
-        font,
-        scale,
-        thickness
-    )
-
+    (width, height), baseline = cv2.getTextSize(text, font, scale, thickness)
     x, y = position
 
-    # Black background
     cv2.rectangle(
         image,
-        (x - 5, y - h - 7),
-        (x + w + 5, y + baseline + 7),
+        (x - 5, y - height - 7),
+        (x + width + 5, y + baseline + 7),
         (0, 0, 0),
-        -1
+        -1,
     )
-
-    # Sharp text
     cv2.putText(
         image,
         text,
@@ -84,245 +45,167 @@ def draw_text(
         scale,
         color,
         thickness,
-        cv2.LINE_8
+        cv2.LINE_8,
     )
 
 
-# ==========================================
-# Process video
-# ==========================================
+def main():
+    if not MODEL_PATH.is_file():
+        raise FileNotFoundError(f"YOLO model was not found: {MODEL_PATH}")
+    if not VIDEO_PATH.is_file():
+        raise FileNotFoundError(f"Traffic video was not found: {VIDEO_PATH}")
 
-while True:
+    show_video = display_video_enabled()
+    model = YOLO(str(MODEL_PATH))
+    capture = cv2.VideoCapture(str(VIDEO_PATH))
+    if not capture.isOpened():
+        capture.release()
+        raise RuntimeError(f"Could not open traffic video: {VIDEO_PATH}")
 
-    success, frame = cap.read()
+    vehicle_ids = {name: set() for name in VEHICLE_CLASSES.values()}
+    all_vehicle_ids = set()
+    stop_requested = False
 
-    if not success:
-        break
+    try:
+        if show_video:
+            cv2.namedWindow(WINDOW_NAME, cv2.WINDOW_NORMAL)
+            cv2.resizeWindow(WINDOW_NAME, 1280, 720)
 
+        while not stop_requested:
+            success, frame = capture.read()
+            if not success:
+                break
 
-    # ======================================
-    # Resize FIRST
-    # ======================================
-
-    frame = cv2.resize(
-        frame,
-        (1280, 720),
-        interpolation=cv2.INTER_LINEAR
-    )
-
-
-    # ======================================
-    # YOLO tracking
-    # ======================================
-
-    results = model.track(
-        frame,
-        persist=True,
-        classes=list(vehicle_classes.keys()),
-        verbose=False
-    )
-
-
-    annotated_frame = frame.copy()
-
-
-    # ======================================
-    # Process vehicles
-    # ======================================
-
-    for result in results:
-
-        if result.boxes is None:
-            continue
-
-
-        for box in result.boxes:
-
-            if box.id is None:
-                continue
-
-
-            track_id = int(box.id[0])
-            class_id = int(box.cls[0])
-
-
-            if class_id not in vehicle_classes:
-                continue
-
-
-            vehicle_type = vehicle_classes[class_id]
-
-
-            unique_vehicle_ids.add(track_id)
-
-
-            if vehicle_type == "car":
-                car_ids.add(track_id)
-
-            elif vehicle_type == "motorcycle":
-                motorcycle_ids.add(track_id)
-
-            elif vehicle_type == "bus":
-                bus_ids.add(track_id)
-
-            elif vehicle_type == "truck":
-                truck_ids.add(track_id)
-
-
-            # Bounding box
-            x1, y1, x2, y2 = map(
-                int,
-                box.xyxy[0]
+            frame = cv2.resize(
+                frame,
+                (1280, 720),
+                interpolation=cv2.INTER_LINEAR,
             )
-
-
-            # Green bounding box
-            cv2.rectangle(
-                annotated_frame,
-                (x1, y1),
-                (x2, y2),
-                (0, 255, 0),
-                2
+            results = model.track(
+                frame,
+                persist=True,
+                classes=list(VEHICLE_CLASSES),
+                verbose=False,
             )
+            annotated_frame = frame.copy()
 
+            for result in results:
+                if result.boxes is None:
+                    continue
 
-            # Vehicle label
-            label = f"{vehicle_type} ID:{track_id}"
+                for box in result.boxes:
+                    if box.id is None:
+                        continue
 
+                    track_id = int(box.id[0])
+                    class_id = int(box.cls[0])
+                    vehicle_type = VEHICLE_CLASSES.get(class_id)
+                    if vehicle_type is None:
+                        continue
 
-            draw_text(
-                annotated_frame,
-                label,
-                (x1, max(y1 - 10, 30)),
-                0.75,
-                (0, 255, 0),
-                2
-            )
+                    vehicle_ids[vehicle_type].add(track_id)
+                    all_vehicle_ids.add(track_id)
+                    x1, y1, x2, y2 = map(int, box.xyxy[0])
+                    cv2.rectangle(
+                        annotated_frame,
+                        (x1, y1),
+                        (x2, y2),
+                        (0, 255, 0),
+                        2,
+                    )
+                    draw_text(
+                        annotated_frame,
+                        f"{vehicle_type} ID:{track_id}",
+                        (x1, max(y1 - 10, 30)),
+                        0.75,
+                        (0, 255, 0),
+                    )
 
+            cars = len(vehicle_ids["car"])
+            motorcycles = len(vehicle_ids["motorcycle"])
+            buses = len(vehicle_ids["bus"])
+            trucks = len(vehicle_ids["truck"])
+            total_vehicles = len(all_vehicle_ids)
+            if total_vehicles < 10:
+                traffic_density = "LOW"
+            elif total_vehicles < 25:
+                traffic_density = "MEDIUM"
+            else:
+                traffic_density = "HIGH"
 
-    # ======================================
-    # Statistics
-    # ======================================
+            if show_video:
+                draw_text(
+                    annotated_frame,
+                    f"Unique Vehicles: {total_vehicles}",
+                    (20, 45),
+                    0.9,
+                    (255, 255, 255),
+                )
+                draw_text(
+                    annotated_frame,
+                    f"Cars: {cars}  Motorcycles: {motorcycles}",
+                    (20, 85),
+                    0.8,
+                    (255, 255, 255),
+                )
+                draw_text(
+                    annotated_frame,
+                    f"Buses: {buses}  Trucks: {trucks}",
+                    (20, 125),
+                    0.8,
+                    (255, 255, 255),
+                )
+                draw_text(
+                    annotated_frame,
+                    f"Traffic Density: {traffic_density}",
+                    (20, 170),
+                    0.9,
+                    (0, 255, 255),
+                )
+                cv2.imshow(WINDOW_NAME, annotated_frame)
+                stop_requested = cv2.waitKey(1) & 0xFF == ord("q")
+    finally:
+        capture.release()
+        if show_video:
+            cv2.destroyAllWindows()
 
-    total_unique = len(unique_vehicle_ids)
-
-    cars = len(car_ids)
-    motorcycles = len(motorcycle_ids)
-    buses = len(bus_ids)
-    trucks = len(truck_ids)
-
-
-    if total_unique < 10:
+    cars = len(vehicle_ids["car"])
+    motorcycles = len(vehicle_ids["motorcycle"])
+    buses = len(vehicle_ids["bus"])
+    trucks = len(vehicle_ids["truck"])
+    total_vehicles = len(all_vehicle_ids)
+    if total_vehicles < 10:
         traffic_density = "LOW"
-
-    elif total_unique < 25:
+    elif total_vehicles < 25:
         traffic_density = "MEDIUM"
-
     else:
         traffic_density = "HIGH"
 
+    traffic_data = {
+        "location": "Intersection_01",
+        "timestamp": datetime.now().isoformat(),
+        "cars": cars,
+        "motorcycles": motorcycles,
+        "buses": buses,
+        "trucks": trucks,
+        "vehicle_count": total_vehicles,
+        "traffic_density": traffic_density,
+    }
+    OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
+    with OUTPUT_PATH.open("w", encoding="utf-8") as output_file:
+        json.dump(traffic_data, output_file, indent=4)
 
-    # ======================================
-    # Clean statistics text
-    # ======================================
-
-    draw_text(
-        annotated_frame,
-        f"Unique Vehicles: {total_unique}",
-        (20, 45),
-        0.9,
-        (255, 255, 255),
-        2
-    )
-
-
-    draw_text(
-        annotated_frame,
-        f"Cars: {cars}  Motorcycles: {motorcycles}",
-        (20, 85),
-        0.8,
-        (255, 255, 255),
-        2
-    )
-
-
-    draw_text(
-        annotated_frame,
-        f"Buses: {buses}  Trucks: {trucks}",
-        (20, 125),
-        0.8,
-        (255, 255, 255),
-        2
-    )
+    print("\n====================================")
+    print("YOLO VEHICLE TRACKING COMPLETED")
+    print("====================================")
+    print("Unique Vehicles:", total_vehicles)
+    print("Cars:", cars)
+    print("Motorcycles:", motorcycles)
+    print("Buses:", buses)
+    print("Trucks:", trucks)
+    print("Traffic Density:", traffic_density)
+    print(f"\nTracking data saved to: {OUTPUT_PATH}")
 
 
-    draw_text(
-        annotated_frame,
-        f"Traffic Density: {traffic_density}",
-        (20, 170),
-        0.9,
-        (0, 255, 255),
-        2
-    )
-
-
-    # ======================================
-    # Display
-    # ======================================
-
-    cv2.imshow(
-        "PATOS - YOLO Vehicle Tracking",
-        annotated_frame
-    )
-
-
-    if cv2.waitKey(1) & 0xFF == ord("q"):
-        break
-
-
-# ==========================================
-# Cleanup
-# ==========================================
-
-cap.release()
-cv2.destroyAllWindows()
-
-
-# ==========================================
-# Save results
-# ==========================================
-
-traffic_data = {
-    "location": "Intersection_01",
-    "timestamp": datetime.now().isoformat(),
-    "cars": cars,
-    "motorcycles": motorcycles,
-    "buses": buses,
-    "trucks": trucks,
-    "vehicle_count": total_unique,
-    "traffic_density": traffic_density
-}
-
-
-with open(
-    "data/traffic_data.json",
-    "w"
-) as f:
-
-    json.dump(
-        traffic_data,
-        f,
-        indent=4
-    )
-
-
-print("\n====================================")
-print("YOLO VEHICLE TRACKING COMPLETED")
-print("====================================")
-print("Unique Vehicles:", total_unique)
-print("Cars:", cars)
-print("Motorcycles:", motorcycles)
-print("Buses:", buses)
-print("Trucks:", trucks)
-print("Traffic Density:", traffic_density)
-print("\nTracking data saved successfully.")
+if __name__ == "__main__":
+    main()

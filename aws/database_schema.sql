@@ -1,48 +1,48 @@
 CREATE TABLE TrafficRecords (
-    id INT IDENTITY(1,1) PRIMARY KEY,
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     device_id VARCHAR(100),
     location VARCHAR(100),
-    timestamp DATETIME2,
-    vehicle_count INT,
-    cars INT,
-    motorcycles INT,
-    buses INT,
-    trucks INT,
+    timestamp TIMESTAMPTZ,
+    vehicle_count INTEGER,
+    cars INTEGER,
+    motorcycles INTEGER,
+    buses INTEGER,
+    trucks INTEGER,
     traffic_density VARCHAR(20)
 );
 
 
 CREATE TABLE CongestionPredictions (
-    id INT IDENTITY(1,1) PRIMARY KEY,
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     location VARCHAR(100),
-    prediction_time DATETIME2,
+    prediction_time TIMESTAMPTZ,
     predicted_congestion VARCHAR(20),
-    vehicle_count INT,
+    vehicle_count INTEGER,
     average_speed FLOAT,
     occupancy FLOAT
 );
 
 
 CREATE TABLE PriorityEvents (
-    id INT IDENTITY(1,1) PRIMARY KEY,
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     vehicle_id VARCHAR(100),
     vehicle_type VARCHAR(50),
     priority_level VARCHAR(30),
     current_location VARCHAR(100),
     destination VARCHAR(100),
-    authorized BIT,
+    authorized BOOLEAN,
     priority_action VARCHAR(100),
-    event_time DATETIME2
+    event_time TIMESTAMPTZ
 );
 
 
 CREATE TABLE SignalRecommendations (
-    id INT IDENTITY(1,1) PRIMARY KEY,
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     location VARCHAR(100),
-    recommendation_time DATETIME2,
+    recommendation_time TIMESTAMPTZ,
     signal_action VARCHAR(100),
-    green_time INT,
-    red_time INT,
+    green_time INTEGER,
+    red_time INTEGER,
     predicted_congestion VARCHAR(20),
     priority_action VARCHAR(100)
 );

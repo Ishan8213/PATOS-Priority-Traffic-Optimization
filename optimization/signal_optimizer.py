@@ -1,15 +1,23 @@
 import json
+from pathlib import Path
+
+
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
 # Load traffic data
-with open("data/traffic_data.json", "r") as f:
+with open(PROJECT_ROOT / "data" / "traffic_data.json", "r", encoding="utf-8") as f:
     traffic = json.load(f)
 
 # Load congestion prediction
-with open("data/congestion_prediction.json", "r") as f:
+with open(
+    PROJECT_ROOT / "data" / "congestion_prediction.json",
+    "r",
+    encoding="utf-8",
+) as f:
     congestion = json.load(f)
 
 # Load priority decision
-with open("data/priority_decision.json", "r") as f:
+with open(PROJECT_ROOT / "data" / "priority_decision.json", "r", encoding="utf-8") as f:
     priority = json.load(f)
 
 
@@ -66,7 +74,11 @@ result = {
 
 
 # Save final optimization result
-with open("data/signal_optimization.json", "w") as f:
+with open(
+    PROJECT_ROOT / "data" / "signal_optimization.json",
+    "w",
+    encoding="utf-8",
+) as f:
     json.dump(result, f, indent=4)
 
 

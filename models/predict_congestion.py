@@ -1,17 +1,20 @@
 import joblib
 import json
+from pathlib import Path
 
+
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
 # Load trained model
 model = joblib.load(
-    "models/congestion_model.pkl"
+    PROJECT_ROOT / "models" / "congestion_model.pkl"
 )
-
 
 # Load current traffic data
 with open(
-    "data/traffic_data.json",
-    "r"
+    PROJECT_ROOT / "data" / "traffic_data.json",
+    "r",
+    encoding="utf-8",
 ) as file:
 
     traffic_data = json.load(file)
@@ -69,8 +72,9 @@ result = {
 
 
 with open(
-    "data/congestion_prediction.json",
-    "w"
+    PROJECT_ROOT / "data" / "congestion_prediction.json",
+    "w",
+    encoding="utf-8",
 ) as file:
 
     json.dump(
@@ -106,8 +110,5 @@ print(
 
 print(
     "\nPrediction saved to:"
-)
-
-print(
-    "data/congestion_prediction.json"
+    f" {PROJECT_ROOT / 'data' / 'congestion_prediction.json'}"
 )

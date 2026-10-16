@@ -1,5 +1,9 @@
+import os
 import subprocess
 import sys
+
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
 def run_step(name, command):
@@ -8,8 +12,9 @@ def run_step(name, command):
     print("=" * 60)
 
     result = subprocess.run(
-        [sys.executable] + command,
-        check=True
+        [sys.executable, os.path.join(BASE_DIR, *command)],
+        check=True,
+        cwd=BASE_DIR
     )
 
     return result.returncode
@@ -34,15 +39,19 @@ steps = [
     ),
     (
         "5. SQL DATA PREPARATION",
-        ["azure/prepare_sql_data.py"]
+        ["aws/prepare_sql_data.py"]
     ),
     (
         "6. SQL INSERT GENERATION",
-        ["azure/generate_sql_inserts.py"]
+        ["aws/generate_sql_inserts.py"]
     ),
     (
-        "7. BLOB STORAGE PREPARATION",
-        ["azure/blob_storage.py"]
+        "7. AWS S3 STORAGE",
+        ["aws/s3_storage.py"]
+    ),
+    (
+        "8. AWS IOT CORE TELEMETRY",
+        ["aws/iot_sender.py"]
     )
 ]
 
@@ -68,8 +77,8 @@ outputs = [
     "data/signal_optimization.json",
     "data/sql_ready/sql_ready_data.json",
     "data/sql_ready/insert_data.sql",
-    "data/blob_storage/traffic_telemetry.json"
+    "data/aws_storage/traffic_telemetry.json"
 ]
 
 for output in outputs:
-    print(f"✓ {output}")
+    print(f"✓ {os.path.join(BASE_DIR, output)}")

@@ -37,7 +37,7 @@ signal = data["signal_record"]
 
 
 sql = f"""
--- PATOS Azure SQL Data Inserts
+-- PATOS PostgreSQL-compatible SQL inserts for AWS RDS
 
 INSERT INTO TrafficRecords
 (device_id, location, timestamp, vehicle_count, cars,
@@ -81,7 +81,7 @@ VALUES
     {sql_string(priority["priority_level"])},
     {sql_string(priority["current_location"])},
     {sql_string(priority["destination"])},
-    {1 if priority["authorized"] else 0},
+    {"TRUE" if priority["authorized"] else "FALSE"},
     {sql_string(priority["priority_action"])},
     {sql_string(priority["event_time"])}
 );
@@ -96,8 +96,8 @@ VALUES
     {sql_string(signal["location"])},
     {sql_string(signal["recommendation_time"])},
     {sql_string(signal["signal_action"])},
-    {signal["green_time"]},
-    {signal["red_time"]},
+    {signal.get("green_time", signal.get("recommended_green_time", 30))},
+    {signal.get("red_time", signal.get("recommended_red_time", 30))},
     {sql_string(signal["predicted_congestion"])},
     {sql_string(signal["priority_action"])}
 );

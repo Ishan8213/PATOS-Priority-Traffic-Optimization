@@ -12,14 +12,15 @@ venv/
 .env.*
 *.key
 *.pem
+*.crt
+certs/
 secrets/
 credentials/
 
-# Azure secrets
-azure/.env
-azure/*credentials*
-azure/*connection*
-azure/*secret*
+# AWS secrets and device certificates
+aws/.env
+aws/*credentials*
+aws/*secret*
 
 # Large media files
 *.mp4
@@ -30,6 +31,7 @@ azure/*secret*
 # Generated/local data
 data/cloud_storage/
 data/blob_storage/
+data/aws_storage/
 data/sql_ready/
 
 # Model files

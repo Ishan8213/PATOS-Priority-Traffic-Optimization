@@ -1,0 +1,7 @@
+{
+    "location": "Intersection_01",
+    "vehicle_count": 45,
+    "average_speed": 30,
+    "occupancy": 0.55,
+    "predicted_congestion": "MEDIUM"
+}

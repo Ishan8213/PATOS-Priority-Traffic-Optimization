@@ -1,0 +1,10 @@
+{
+    "location": "Intersection_01",
+    "timestamp": "2026-09-25T05:39:51.808512",
+    "cars": 37,
+    "motorcycles": 5,
+    "buses": 10,
+    "trucks": 11,
+    "vehicle_count": 45,
+    "traffic_density": "HIGH"
+}

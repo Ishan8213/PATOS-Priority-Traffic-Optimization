@@ -1,0 +1,14 @@
+{
+    "vehicle_id": "AMB-001",
+    "vehicle_type": "AMBULANCE",
+    "priority_level": "CRITICAL",
+    "current_location": "Intersection_01",
+    "destination": "City_Hospital",
+    "route": [
+        "Intersection_01",
+        "Intersection_02",
+        "Intersection_03",
+        "Intersection_04"
+    ],
+    "authorized": true
+}

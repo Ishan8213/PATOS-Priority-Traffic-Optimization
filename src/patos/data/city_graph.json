@@ -1,0 +1,1123 @@
+{
+ "description": "Synthetic grid for demonstration; not real roads.",
+ "nodes": [
+  {
+   "id": "N_0_0",
+   "lat": 12.9,
+   "lon": 77.6
+  },
+  {
+   "id": "N_0_1",
+   "lat": 12.9,
+   "lon": 77.603686
+  },
+  {
+   "id": "N_0_2",
+   "lat": 12.9,
+   "lon": 77.607373
+  },
+  {
+   "id": "N_0_3",
+   "lat": 12.9,
+   "lon": 77.611059
+  },
+  {
+   "id": "N_0_4",
+   "lat": 12.9,
+   "lon": 77.614745
+  },
+  {
+   "id": "N_0_5",
+   "lat": 12.9,
+   "lon": 77.618431
+  },
+  {
+   "id": "N_1_0",
+   "lat": 12.903593,
+   "lon": 77.6
+  },
+  {
+   "id": "N_1_1",
+   "lat": 12.903593,
+   "lon": 77.603686,
+   "signal": {
+    "cycle_s": 75,
+    "ns_green_s": 25,
+    "ew_green_s": 35,
+    "offset_s": 50
+   }
+  },
+  {
+   "id": "N_1_2",
+   "lat": 12.903593,
+   "lon": 77.607373,
+   "signal": {
+    "cycle_s": 90,
+    "ns_green_s": 25,
+    "ew_green_s": 35,
+    "offset_s": 9
+   }
+  },
+  {
+   "id": "N_1_3",
+   "lat": 12.903593,
+   "lon": 77.611059,
+   "signal": {
+    "cycle_s": 90,
+    "ns_green_s": 25,
+    "ew_green_s": 35,
+    "offset_s": 46
+   }
+  },
+  {
+   "id": "N_1_4",
+   "lat": 12.903593,
+   "lon": 77.614745,
+   "signal": {
+    "cycle_s": 90,
+    "ns_green_s": 25,
+    "ew_green_s": 35,
+    "offset_s": 64
+   }
+  },
+  {
+   "id": "N_1_5",
+   "lat": 12.903593,
+   "lon": 77.618431
+  },
+  {
+   "id": "N_2_0",
+   "lat": 12.907186,
+   "lon": 77.6
+  },
+  {
+   "id": "N_2_1",
+   "lat": 12.907186,
+   "lon": 77.603686,
+   "signal": {
+    "cycle_s": 60,
+    "ns_green_s": 25,
+    "ew_green_s": 20,
+    "offset_s": 27
+   }
+  },
+  {
+   "id": "N_2_2",
+   "lat": 12.907186,
+   "lon": 77.607373,
+   "signal": {
+    "cycle_s": 75,
+    "ns_green_s": 25,
+    "ew_green_s": 20,
+    "offset_s": 11
+   }
+  },
+  {
+   "id": "N_2_3",
+   "lat": 12.907186,
+   "lon": 77.611059,
+   "signal": {
+    "cycle_s": 90,
+    "ns_green_s": 30,
+    "ew_green_s": 20,
+    "offset_s": 72
+   }
+  },
+  {
+   "id": "N_2_4",
+   "lat": 12.907186,
+   "lon": 77.614745,
+   "signal": {
+    "cycle_s": 60,
+    "ns_green_s": 25,
+    "ew_green_s": 30,
+    "offset_s": 40
+   }
+  },
+  {
+   "id": "N_2_5",
+   "lat": 12.907186,
+   "lon": 77.618431
+  },
+  {
+   "id": "N_3_0",
+   "lat": 12.91078,
+   "lon": 77.6
+  },
+  {
+   "id": "N_3_1",
+   "lat": 12.91078,
+   "lon": 77.603686,
+   "signal": {
+    "cycle_s": 90,
+    "ns_green_s": 25,
+    "ew_green_s": 30,
+    "offset_s": 74
+   }
+  },
+  {
+   "id": "N_3_2",
+   "lat": 12.91078,
+   "lon": 77.607373,
+   "signal": {
+    "cycle_s": 75,
+    "ns_green_s": 25,
+    "ew_green_s": 20,
+    "offset_s": 5
+   }
+  },
+  {
+   "id": "N_3_3",
+   "lat": 12.91078,
+   "lon": 77.611059,
+   "signal": {
+    "cycle_s": 90,
+    "ns_green_s": 25,
+    "ew_green_s": 25,
+    "offset_s": 53
+   }
+  },
+  {
+   "id": "N_3_4",
+   "lat": 12.91078,
+   "lon": 77.614745,
+   "signal": {
+    "cycle_s": 60,
+    "ns_green_s": 35,
+    "ew_green_s": 20,
+    "offset_s": 36
+   }
+  },
+  {
+   "id": "N_3_5",
+   "lat": 12.91078,
+   "lon": 77.618431
+  },
+  {
+   "id": "N_4_0",
+   "lat": 12.914373,
+   "lon": 77.6
+  },
+  {
+   "id": "N_4_1",
+   "lat": 12.914373,
+   "lon": 77.603686,
+   "signal": {
+    "cycle_s": 75,
+    "ns_green_s": 35,
+    "ew_green_s": 35,
+    "offset_s": 23
+   }
+  },
+  {
+   "id": "N_4_2",
+   "lat": 12.914373,
+   "lon": 77.607373,
+   "signal": {
+    "cycle_s": 60,
+    "ns_green_s": 35,
+    "ew_green_s": 20,
+    "offset_s": 36
+   }
+  },
+  {
+   "id": "N_4_3",
+   "lat": 12.914373,
+   "lon": 77.611059,
+   "signal": {
+    "cycle_s": 90,
+    "ns_green_s": 25,
+    "ew_green_s": 35,
+    "offset_s": 47
+   }
+  },
+  {
+   "id": "N_4_4",
+   "lat": 12.914373,
+   "lon": 77.614745,
+   "signal": {
+    "cycle_s": 60,
+    "ns_green_s": 35,
+    "ew_green_s": 20,
+    "offset_s": 45
+   }
+  },
+  {
+   "id": "N_4_5",
+   "lat": 12.914373,
+   "lon": 77.618431
+  },
+  {
+   "id": "N_5_0",
+   "lat": 12.917966,
+   "lon": 77.6
+  },
+  {
+   "id": "N_5_1",
+   "lat": 12.917966,
+   "lon": 77.603686
+  },
+  {
+   "id": "N_5_2",
+   "lat": 12.917966,
+   "lon": 77.607373
+  },
+  {
+   "id": "N_5_3",
+   "lat": 12.917966,
+   "lon": 77.611059
+  },
+  {
+   "id": "N_5_4",
+   "lat": 12.917966,
+   "lon": 77.614745
+  },
+  {
+   "id": "N_5_5",
+   "lat": 12.917966,
+   "lon": 77.618431
+  }
+ ],
+ "edges": [
+  {
+   "source": "N_0_0",
+   "target": "N_0_1",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "EW"
+  },
+  {
+   "source": "N_0_1",
+   "target": "N_0_0",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "EW"
+  },
+  {
+   "source": "N_0_0",
+   "target": "N_1_0",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "NS"
+  },
+  {
+   "source": "N_1_0",
+   "target": "N_0_0",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "NS"
+  },
+  {
+   "source": "N_0_1",
+   "target": "N_0_2",
+   "length_m": 399.6,
+   "speed_kmh": 40,
+   "axis": "EW"
+  },
+  {
+   "source": "N_0_2",
+   "target": "N_0_1",
+   "length_m": 399.6,
+   "speed_kmh": 40,
+   "axis": "EW"
+  },
+  {
+   "source": "N_0_1",
+   "target": "N_1_1",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "NS"
+  },
+  {
+   "source": "N_1_1",
+   "target": "N_0_1",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "NS"
+  },
+  {
+   "source": "N_0_2",
+   "target": "N_0_3",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "EW"
+  },
+  {
+   "source": "N_0_3",
+   "target": "N_0_2",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "EW"
+  },
+  {
+   "source": "N_0_2",
+   "target": "N_1_2",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "NS"
+  },
+  {
+   "source": "N_1_2",
+   "target": "N_0_2",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "NS"
+  },
+  {
+   "source": "N_0_3",
+   "target": "N_0_4",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "EW"
+  },
+  {
+   "source": "N_0_4",
+   "target": "N_0_3",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "EW"
+  },
+  {
+   "source": "N_0_3",
+   "target": "N_1_3",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "NS"
+  },
+  {
+   "source": "N_1_3",
+   "target": "N_0_3",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "NS"
+  },
+  {
+   "source": "N_0_4",
+   "target": "N_0_5",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "EW"
+  },
+  {
+   "source": "N_0_5",
+   "target": "N_0_4",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "EW"
+  },
+  {
+   "source": "N_0_4",
+   "target": "N_1_4",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "NS"
+  },
+  {
+   "source": "N_1_4",
+   "target": "N_0_4",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "NS"
+  },
+  {
+   "source": "N_0_5",
+   "target": "N_1_5",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "NS"
+  },
+  {
+   "source": "N_1_5",
+   "target": "N_0_5",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "NS"
+  },
+  {
+   "source": "N_1_0",
+   "target": "N_1_1",
+   "length_m": 399.5,
+   "speed_kmh": 60,
+   "axis": "EW"
+  },
+  {
+   "source": "N_1_1",
+   "target": "N_1_0",
+   "length_m": 399.5,
+   "speed_kmh": 60,
+   "axis": "EW"
+  },
+  {
+   "source": "N_1_0",
+   "target": "N_2_0",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "NS"
+  },
+  {
+   "source": "N_2_0",
+   "target": "N_1_0",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "NS"
+  },
+  {
+   "source": "N_1_1",
+   "target": "N_1_2",
+   "length_m": 399.6,
+   "speed_kmh": 60,
+   "axis": "EW"
+  },
+  {
+   "source": "N_1_2",
+   "target": "N_1_1",
+   "length_m": 399.6,
+   "speed_kmh": 60,
+   "axis": "EW"
+  },
+  {
+   "source": "N_1_1",
+   "target": "N_2_1",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "NS"
+  },
+  {
+   "source": "N_2_1",
+   "target": "N_1_1",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "NS"
+  },
+  {
+   "source": "N_1_2",
+   "target": "N_1_3",
+   "length_m": 399.5,
+   "speed_kmh": 60,
+   "axis": "EW"
+  },
+  {
+   "source": "N_1_3",
+   "target": "N_1_2",
+   "length_m": 399.5,
+   "speed_kmh": 60,
+   "axis": "EW"
+  },
+  {
+   "source": "N_1_2",
+   "target": "N_2_2",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "NS"
+  },
+  {
+   "source": "N_2_2",
+   "target": "N_1_2",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "NS"
+  },
+  {
+   "source": "N_1_3",
+   "target": "N_1_4",
+   "length_m": 399.5,
+   "speed_kmh": 60,
+   "axis": "EW"
+  },
+  {
+   "source": "N_1_4",
+   "target": "N_1_3",
+   "length_m": 399.5,
+   "speed_kmh": 60,
+   "axis": "EW"
+  },
+  {
+   "source": "N_1_3",
+   "target": "N_2_3",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "NS"
+  },
+  {
+   "source": "N_2_3",
+   "target": "N_1_3",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "NS"
+  },
+  {
+   "source": "N_1_4",
+   "target": "N_1_5",
+   "length_m": 399.5,
+   "speed_kmh": 60,
+   "axis": "EW"
+  },
+  {
+   "source": "N_1_5",
+   "target": "N_1_4",
+   "length_m": 399.5,
+   "speed_kmh": 60,
+   "axis": "EW"
+  },
+  {
+   "source": "N_1_4",
+   "target": "N_2_4",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "NS"
+  },
+  {
+   "source": "N_2_4",
+   "target": "N_1_4",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "NS"
+  },
+  {
+   "source": "N_1_5",
+   "target": "N_2_5",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "NS"
+  },
+  {
+   "source": "N_2_5",
+   "target": "N_1_5",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "NS"
+  },
+  {
+   "source": "N_2_0",
+   "target": "N_2_1",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "EW"
+  },
+  {
+   "source": "N_2_1",
+   "target": "N_2_0",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "EW"
+  },
+  {
+   "source": "N_2_0",
+   "target": "N_3_0",
+   "length_m": 399.6,
+   "speed_kmh": 40,
+   "axis": "NS"
+  },
+  {
+   "source": "N_3_0",
+   "target": "N_2_0",
+   "length_m": 399.6,
+   "speed_kmh": 40,
+   "axis": "NS"
+  },
+  {
+   "source": "N_2_1",
+   "target": "N_2_2",
+   "length_m": 399.6,
+   "speed_kmh": 40,
+   "axis": "EW"
+  },
+  {
+   "source": "N_2_2",
+   "target": "N_2_1",
+   "length_m": 399.6,
+   "speed_kmh": 40,
+   "axis": "EW"
+  },
+  {
+   "source": "N_2_1",
+   "target": "N_3_1",
+   "length_m": 399.6,
+   "speed_kmh": 40,
+   "axis": "NS"
+  },
+  {
+   "source": "N_3_1",
+   "target": "N_2_1",
+   "length_m": 399.6,
+   "speed_kmh": 40,
+   "axis": "NS"
+  },
+  {
+   "source": "N_2_2",
+   "target": "N_2_3",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "EW"
+  },
+  {
+   "source": "N_2_3",
+   "target": "N_2_2",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "EW"
+  },
+  {
+   "source": "N_2_2",
+   "target": "N_3_2",
+   "length_m": 399.6,
+   "speed_kmh": 40,
+   "axis": "NS"
+  },
+  {
+   "source": "N_3_2",
+   "target": "N_2_2",
+   "length_m": 399.6,
+   "speed_kmh": 40,
+   "axis": "NS"
+  },
+  {
+   "source": "N_2_3",
+   "target": "N_2_4",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "EW"
+  },
+  {
+   "source": "N_2_4",
+   "target": "N_2_3",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "EW"
+  },
+  {
+   "source": "N_2_3",
+   "target": "N_3_3",
+   "length_m": 399.6,
+   "speed_kmh": 40,
+   "axis": "NS"
+  },
+  {
+   "source": "N_3_3",
+   "target": "N_2_3",
+   "length_m": 399.6,
+   "speed_kmh": 40,
+   "axis": "NS"
+  },
+  {
+   "source": "N_2_4",
+   "target": "N_2_5",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "EW"
+  },
+  {
+   "source": "N_2_5",
+   "target": "N_2_4",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "EW"
+  },
+  {
+   "source": "N_2_4",
+   "target": "N_3_4",
+   "length_m": 399.6,
+   "speed_kmh": 40,
+   "axis": "NS"
+  },
+  {
+   "source": "N_3_4",
+   "target": "N_2_4",
+   "length_m": 399.6,
+   "speed_kmh": 40,
+   "axis": "NS"
+  },
+  {
+   "source": "N_2_5",
+   "target": "N_3_5",
+   "length_m": 399.6,
+   "speed_kmh": 40,
+   "axis": "NS"
+  },
+  {
+   "source": "N_3_5",
+   "target": "N_2_5",
+   "length_m": 399.6,
+   "speed_kmh": 40,
+   "axis": "NS"
+  },
+  {
+   "source": "N_3_0",
+   "target": "N_3_1",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "EW"
+  },
+  {
+   "source": "N_3_1",
+   "target": "N_3_0",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "EW"
+  },
+  {
+   "source": "N_3_0",
+   "target": "N_4_0",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "NS"
+  },
+  {
+   "source": "N_4_0",
+   "target": "N_3_0",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "NS"
+  },
+  {
+   "source": "N_3_1",
+   "target": "N_3_2",
+   "length_m": 399.6,
+   "speed_kmh": 40,
+   "axis": "EW"
+  },
+  {
+   "source": "N_3_2",
+   "target": "N_3_1",
+   "length_m": 399.6,
+   "speed_kmh": 40,
+   "axis": "EW"
+  },
+  {
+   "source": "N_3_1",
+   "target": "N_4_1",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "NS"
+  },
+  {
+   "source": "N_4_1",
+   "target": "N_3_1",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "NS"
+  },
+  {
+   "source": "N_3_2",
+   "target": "N_3_3",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "EW"
+  },
+  {
+   "source": "N_3_3",
+   "target": "N_3_2",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "EW"
+  },
+  {
+   "source": "N_3_2",
+   "target": "N_4_2",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "NS"
+  },
+  {
+   "source": "N_4_2",
+   "target": "N_3_2",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "NS"
+  },
+  {
+   "source": "N_3_3",
+   "target": "N_3_4",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "EW"
+  },
+  {
+   "source": "N_3_4",
+   "target": "N_3_3",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "EW"
+  },
+  {
+   "source": "N_3_3",
+   "target": "N_4_3",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "NS"
+  },
+  {
+   "source": "N_4_3",
+   "target": "N_3_3",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "NS"
+  },
+  {
+   "source": "N_3_4",
+   "target": "N_3_5",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "EW"
+  },
+  {
+   "source": "N_3_5",
+   "target": "N_3_4",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "EW"
+  },
+  {
+   "source": "N_3_4",
+   "target": "N_4_4",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "NS"
+  },
+  {
+   "source": "N_4_4",
+   "target": "N_3_4",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "NS"
+  },
+  {
+   "source": "N_3_5",
+   "target": "N_4_5",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "NS"
+  },
+  {
+   "source": "N_4_5",
+   "target": "N_3_5",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "NS"
+  },
+  {
+   "source": "N_4_0",
+   "target": "N_4_1",
+   "length_m": 399.5,
+   "speed_kmh": 60,
+   "axis": "EW"
+  },
+  {
+   "source": "N_4_1",
+   "target": "N_4_0",
+   "length_m": 399.5,
+   "speed_kmh": 60,
+   "axis": "EW"
+  },
+  {
+   "source": "N_4_0",
+   "target": "N_5_0",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "NS"
+  },
+  {
+   "source": "N_5_0",
+   "target": "N_4_0",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "NS"
+  },
+  {
+   "source": "N_4_1",
+   "target": "N_4_2",
+   "length_m": 399.6,
+   "speed_kmh": 60,
+   "axis": "EW"
+  },
+  {
+   "source": "N_4_2",
+   "target": "N_4_1",
+   "length_m": 399.6,
+   "speed_kmh": 60,
+   "axis": "EW"
+  },
+  {
+   "source": "N_4_1",
+   "target": "N_5_1",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "NS"
+  },
+  {
+   "source": "N_5_1",
+   "target": "N_4_1",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "NS"
+  },
+  {
+   "source": "N_4_2",
+   "target": "N_4_3",
+   "length_m": 399.5,
+   "speed_kmh": 60,
+   "axis": "EW"
+  },
+  {
+   "source": "N_4_3",
+   "target": "N_4_2",
+   "length_m": 399.5,
+   "speed_kmh": 60,
+   "axis": "EW"
+  },
+  {
+   "source": "N_4_2",
+   "target": "N_5_2",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "NS"
+  },
+  {
+   "source": "N_5_2",
+   "target": "N_4_2",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "NS"
+  },
+  {
+   "source": "N_4_3",
+   "target": "N_4_4",
+   "length_m": 399.5,
+   "speed_kmh": 60,
+   "axis": "EW"
+  },
+  {
+   "source": "N_4_4",
+   "target": "N_4_3",
+   "length_m": 399.5,
+   "speed_kmh": 60,
+   "axis": "EW"
+  },
+  {
+   "source": "N_4_3",
+   "target": "N_5_3",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "NS"
+  },
+  {
+   "source": "N_5_3",
+   "target": "N_4_3",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "NS"
+  },
+  {
+   "source": "N_4_4",
+   "target": "N_4_5",
+   "length_m": 399.5,
+   "speed_kmh": 60,
+   "axis": "EW"
+  },
+  {
+   "source": "N_4_5",
+   "target": "N_4_4",
+   "length_m": 399.5,
+   "speed_kmh": 60,
+   "axis": "EW"
+  },
+  {
+   "source": "N_4_4",
+   "target": "N_5_4",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "NS"
+  },
+  {
+   "source": "N_5_4",
+   "target": "N_4_4",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "NS"
+  },
+  {
+   "source": "N_4_5",
+   "target": "N_5_5",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "NS"
+  },
+  {
+   "source": "N_5_5",
+   "target": "N_4_5",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "NS"
+  },
+  {
+   "source": "N_5_0",
+   "target": "N_5_1",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "EW"
+  },
+  {
+   "source": "N_5_1",
+   "target": "N_5_0",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "EW"
+  },
+  {
+   "source": "N_5_1",
+   "target": "N_5_2",
+   "length_m": 399.6,
+   "speed_kmh": 40,
+   "axis": "EW"
+  },
+  {
+   "source": "N_5_2",
+   "target": "N_5_1",
+   "length_m": 399.6,
+   "speed_kmh": 40,
+   "axis": "EW"
+  },
+  {
+   "source": "N_5_2",
+   "target": "N_5_3",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "EW"
+  },
+  {
+   "source": "N_5_3",
+   "target": "N_5_2",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "EW"
+  },
+  {
+   "source": "N_5_3",
+   "target": "N_5_4",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "EW"
+  },
+  {
+   "source": "N_5_4",
+   "target": "N_5_3",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "EW"
+  },
+  {
+   "source": "N_5_4",
+   "target": "N_5_5",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "EW"
+  },
+  {
+   "source": "N_5_5",
+   "target": "N_5_4",
+   "length_m": 399.5,
+   "speed_kmh": 40,
+   "axis": "EW"
+  }
+ ]
+}

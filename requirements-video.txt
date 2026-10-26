@@ -1,0 +1,2 @@
+# Optional: real vehicle counting from video (large download, includes PyTorch).
+ultralytics>=8.1,<9

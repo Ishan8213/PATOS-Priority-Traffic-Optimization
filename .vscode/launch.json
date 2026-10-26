@@ -1,0 +1,19 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "PATOS local demo",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/run_local.py",
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Benchmark (signal-aware vs baseline)",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/benchmark.py",
+      "console": "integratedTerminal"
+    }
+  ]
+}

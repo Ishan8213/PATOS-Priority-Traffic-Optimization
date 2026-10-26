@@ -1,0 +1,4 @@
+# Only needed later, for deploying to AWS (see docs/DEPLOY.md).
+aws-cdk-lib>=2.150,<3
+constructs>=10.3,<11
+boto3>=1.35,<2

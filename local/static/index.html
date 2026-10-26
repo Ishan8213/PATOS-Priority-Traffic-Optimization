@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PATOS – signal-aware routing (local demo)</title>
+<style>
+  :root { --bg:#f5f6f8; --card:#fff; --ink:#1d2430; --muted:#5b6575; --line:#d9dee6;
+          --red:#d93025; --green:#1e9e4a; --amber:#f0a500; --blue:#1a73e8; --purple:#7b3fe4; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#14181f; --card:#1e242e; --ink:#e8ecf2; --muted:#9aa5b5; --line:#343c49; } }
+  * { box-sizing:border-box; }
+  body { margin:0; font:14px/1.45 system-ui, Segoe UI, Arial, sans-serif; background:var(--bg); color:var(--ink); }
+  header { padding:10px 16px; border-bottom:1px solid var(--line); background:var(--card); display:flex; gap:12px; align-items:baseline; flex-wrap:wrap; }
+  header h1 { font-size:17px; margin:0; } header span { color:var(--muted); font-size:12px; }
+  main { display:grid; grid-template-columns:minmax(380px,1.15fr) minmax(340px,1fr); gap:12px; padding:12px; align-items:start; }
+  @media (max-width: 900px) { main { grid-template-columns:1fr; } }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:8px; padding:10px 12px; margin-bottom:12px; }
+  .card h2 { font-size:13px; margin:0 0 8px; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); }
+  .row { display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-bottom:6px; }
+  label { font-size:12px; color:var(--muted); }
+  select, button, input[type=range] { font:inherit; }
+  select, button { padding:5px 9px; border:1px solid var(--line); border-radius:6px; background:var(--card); color:var(--ink); }
+  button.primary { background:var(--blue); border-color:var(--blue); color:#fff; cursor:pointer; }
+  button { cursor:pointer; } button:disabled { opacity:.5; cursor:default; }
+  svg#map { width:100%; height:auto; max-height:78vh; background:var(--card); border:1px solid var(--line); border-radius:8px; display:block; }
+  .legend { display:flex; gap:12px; flex-wrap:wrap; font-size:12px; color:var(--muted); margin-top:6px; }
+  .dot { display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:4px; vertical-align:-1px; }
+  .route-card { border:2px solid var(--line); border-radius:8px; padding:6px 10px; margin-bottom:6px; cursor:pointer; }
+  .route-card.sel { border-color:var(--blue); } .route-card b { font-size:15px; }
+  .badge { display:inline-block; padding:1px 7px; border-radius:10px; font-size:12px; color:#fff; }
+  .b-green { background:var(--green); } .b-red { background:var(--red); } .b-amber { background:var(--amber); } .b-gray { background:#7b8494; } .b-purple { background:var(--purple); }
+  table { border-collapse:collapse; width:100%; font-size:12.5px; } th, td { text-align:left; padding:3px 6px; border-bottom:1px solid var(--line); }
+  th { color:var(--muted); font-weight:600; }
+  .muted { color:var(--muted); } .small { font-size:12px; }
+  #msg { color:var(--red); min-height:18px; }
+  .note { font-size:12px; color:var(--muted); }
+</style>
+</head>
+<body>
+<header>
+  <h1>PATOS – signal-aware routing</h1>
+  <span>Local demo · simulated sensors · modeled signal timing · advisory only, no real signal is controlled</span>
+</header>
+<main>
+  <section>
+    <div class="card">
+      <div class="row">
+        <label>Vehicle <select id="vehicle"></select></label>
+        <label>Role <select id="role" title="Local stand-in for Cognito groups. Only emergency_operator receives priority advice.">
+          <option value="driver">driver</option><option value="emergency_operator">emergency_operator</option></select></label>
+        <button id="swap" title="Swap origin and destination">⇄ Swap</button>
+        <button id="clear">Clear</button>
+        <button id="go" class="primary" disabled>Find routes</button>
+      </div>
+      <div class="small muted" id="hint">Click a node on the map to set the origin (A), then another for the destination (B).</div>
+      <div id="msg" role="alert"></div>
+    </div>
+    <svg id="map" viewBox="0 0 640 640" role="img" aria-label="Road network with traffic signals and routes"></svg>
+    <div class="legend">
+      <span><i class="dot" style="background:var(--green)"></i>green</span>
+      <span><i class="dot" style="background:var(--amber)"></i>green ending (&lt; 2 s)</span>
+      <span><i class="dot" style="background:var(--red)"></i>red / all-red</span>
+      <span>Signal cross: vertical bar = north–south, horizontal bar = east–west</span>
+      <span>Ring: congestion (green low · orange medium · red high · gray no fresh data)</span>
+    </div>
+  </section>
+  <section>
+    <div class="card">
+      <h2>Live sensors (simulated)</h2>
+      <div class="row">
+        <button id="simToggle">Pause sensors</button>
+        <label>Traffic load <input id="load" type="range" min="0" max="2" step="0.1" value="0.8"> <span id="loadVal">0.8</span></label>
+      </div>
+      <div class="small muted" id="dq"></div>
+      <div class="small muted" id="awsStatus"></div>
+    </div>
+    <div class="card" id="routesCard" hidden>
+      <h2>Routes</h2>
+      <div id="routes"></div>
+      <div class="row">
+        <button id="anim">▶ Animate selected trip</button>
+        <label>Speed <select id="speed"><option value="1">1×</option><option value="5">5×</option><option value="10" selected>10×</option><option value="20">20×</option></select></label>
+        <span class="small muted" id="animInfo"></span>
+      </div>
+    </div>
+    <div class="card" id="signalsCard" hidden>
+      <h2>Signal plan for selected route</h2>
+      <div style="overflow-x:auto"><table id="sigTable"></table></div>
+      <div class="note">Times are seconds after departure. A vehicle never passes on red: the planned wait is added to the ETA.</div>
+    </div>
+    <div class="card" id="prioCard" hidden>
+      <h2>Emergency priority (advisory)</h2>
+      <div id="prio"></div>
+    </div>
+    <div class="card">
+      <h2>Audit log (latest requests)</h2>
+      <div style="overflow-x:auto"><table id="audit"></table></div>
+    </div>
+    <div class="note" id="disc"></div>
+  </section>
+</main>
+<script>
+"use strict";
+const VEHICLES = ["CAR","BUS","TRUCK","MOTORCYCLE","AMBULANCE","FIRE_TRUCK","POLICE"];
+const COLORS = ["#d93025", "#1a73e8", "#7b3fe4"];
+const NS = "http://www.w3.org/2000/svg";
+const W = 640, PAD = 40;
+const $ = (id) => document.getElementById(id);
+let graph = null, pos = {}, sigState = {}, nodeEls = {}, sigEls = {};
+let origin = null, dest = null, result = null, routes = [], sel = 0;
+let serverTs0 = 0, perf0 = 0, anim = null, routeLayer, vehicleEl;
+
+function el(tag, attrs, parent) { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (parent) parent.appendChild(e); return e; }
+function fmt(s) { s = Math.round(s); const m = Math.floor(s/60); return m + ":" + String(s%60).padStart(2,"0"); }
+function nowReal() { return serverTs0 + (performance.now() - perf0)/1000; }
+function simNow() { return anim ? anim.depart + ((performance.now() - anim.t0)/1000) * anim.speed : nowReal(); }
+
+function phase(s, axis, t) {
+  const x = (((t - s.cycle_start) % s.cycle_s) + s.cycle_s) % s.cycle_s;
+  const a = axis === "NS" ? 0 : s.ns_green_s, b = axis === "NS" ? s.ns_green_s : s.ns_green_s + s.ew_green_s;
+  if (x >= a && x < b) return (b - x) < 2 ? "amber" : "green";
+  return "red";
+}
+const PCOL = { green: "var(--green)", amber: "var(--amber)", red: "var(--red)" };
+const LCOL = { LOW: "var(--green)", MEDIUM: "#f07f00", HIGH: "var(--red)" };
+
+async function api(path, opts) {
+  const r = await fetch(path, opts);
+  const text = await r.text();
+  let body = {}; try { body = JSON.parse(text); } catch (e) {}
+  return { ok: r.ok, status: r.status, body };
+}
+
+function project(n) {
+  const lats = graph.nodes.map(x => x.lat), lons = graph.nodes.map(x => x.lon);
+  const minLat = Math.min(...lats), maxLat = Math.max(...lats), minLon = Math.min(...lons), maxLon = Math.max(...lons);
+  return [PAD + (n.lon - minLon) / (maxLon - minLon) * (W - 2*PAD), W - PAD - (n.lat - minLat) / (maxLat - minLat) * (W - 2*PAD)];
+}
+
+function drawMap() {
+  const svg = $("map"); svg.textContent = "";
+  graph.nodes.forEach(n => { pos[n.id] = project(n); });
+  const gEdges = el("g", {}, svg);
+  graph.edges.forEach(e => { const [x1,y1] = pos[e.source], [x2,y2] = pos[e.target];
+    el("line", { x1, y1, x2, y2, stroke: "var(--line)", "stroke-width": e.speed_kmh >= 60 ? 6 : 3, "stroke-linecap": "round" }, gEdges); });
+  routeLayer = el("g", {}, svg);
+  const gNodes = el("g", {}, svg);
+  graph.nodes.forEach(n => {
+    const [x, y] = pos[n.id];
+    const g = el("g", { style: "cursor:pointer" }, gNodes);
+    const title = el("title", {}, g); title.textContent = n.id + (n.signalized ? " (signal)" : "");
+    if (n.signalized) {
+      const ring = el("circle", { cx: x, cy: y, r: 13, fill: "var(--card)", stroke: "#8a93a3", "stroke-width": 3 }, g);
+      const v = el("rect", { x: x-2.5, y: y-9, width: 5, height: 18, rx: 2, fill: "#888" }, g);
+      const h = el("rect", { x: x-9, y: y-2.5, width: 18, height: 5, rx: 2, fill: "#888" }, g);
+      sigEls[n.id] = { ring, v, h };
+    } else {
+      el("circle", { cx: x, cy: y, r: 6, fill: "#8a93a3" }, g);
+    }
+    el("circle", { cx: x, cy: y, r: 16, fill: "transparent" }, g);
+    g.addEventListener("click", () => pick(n.id));
+    nodeEls[n.id] = g;
+  });
+  vehicleEl = el("circle", { r: 7, fill: "#111", stroke: "#fff", "stroke-width": 2, visibility: "hidden" }, svg);
+  const marks = el("g", { id: "marks" }, svg);
+}
+
+function drawMarks() {
+  const old = document.getElementById("marks"); if (old) old.remove();
+  const g = el("g", { id: "marks", "pointer-events": "none" }, $("map"));
+  [[origin, "A", "#1a73e8"], [dest, "B", "#7b3fe4"]].forEach(([id, t, c]) => {
+    if (!id) return; const [x, y] = pos[id];
+    el("circle", { cx: x, cy: y - 24, r: 10, fill: c }, g);
+    const tx = el("text", { x, y: y - 20, "text-anchor": "middle", fill: "#fff", "font-size": 12, "font-weight": 700 }, g); tx.textContent = t;
+  });
+}
+
+function pick(id) {
+  if (!origin || (origin && dest)) { origin = id; dest = null; clearResult(); }
+  else if (id !== origin) { dest = id; }
+  drawMarks(); updateButtons();
+  $("hint").textContent = origin && !dest ? "Origin " + origin + " set. Click the destination." : (origin && dest ? origin + " → " + dest : "");
+}
+function updateButtons() { $("go").disabled = !(origin && dest); }
+function clearResult() { result = null; routes = []; anim = null; routeLayer.textContent = ""; vehicleEl.setAttribute("visibility", "hidden");
+  ["routesCard","signalsCard","prioCard"].forEach(i => $(i).hidden = true); $("msg").textContent = ""; $("animInfo").textContent = ""; }
+
+async function findRoutes() {
+  $("msg").textContent = ""; anim = null; vehicleEl.setAttribute("visibility", "hidden");
+  const r = await api("/api/route", { method: "POST", headers: { "Content-Type": "application/json", "X-Demo-Role": $("role").value },
+    body: JSON.stringify({ origin: { node_id: origin }, destination: { node_id: dest }, vehicle_type: $("vehicle").value }) });
+  if (!r.ok) { $("msg").textContent = "Error " + r.status + ": " + (r.body.error || "request failed"); return; }
+  result = r.body; routes = [result.fastest, ...result.alternatives]; sel = 0;
+  $("disc").textContent = result.disclaimer; renderRoutes(); refreshAudit();
+}
+
+function renderRoutes() {
+  routeLayer.textContent = "";
+  routes.forEach((rt, i) => { if (i === sel) return; drawRoute(rt, i, false); });
+  drawRoute(routes[sel], sel, true);
+  const box = $("routes"); box.textContent = "";
+  routes.forEach((rt, i) => {
+    const d = document.createElement("div"); d.className = "route-card" + (i === sel ? " sel" : ""); d.style.borderLeft = "6px solid " + COLORS[i % 3];
+    const b = document.createElement("b"); b.textContent = rt.label.replace("_", " ") + " – " + fmt(rt.eta_s) + " min";
+    const s = document.createElement("div"); s.className = "small muted";
+    s.textContent = "driving " + fmt(rt.driving_s) + " + signal waits " + Math.round(rt.signal_wait_s) + " s · " + (rt.distance_m/1000).toFixed(2) + " km · " + rt.signals.length + " signals";
+    d.append(b, s); d.addEventListener("click", () => { sel = i; anim = null; vehicleEl.setAttribute("visibility","hidden"); renderRoutes(); }); box.appendChild(d);
+  });
+  $("routesCard").hidden = false; renderSignals(); renderPriority();
+}
+
+function drawRoute(rt, i, selected) {
+  const pts = rt.path.map(p => pos[p.node_id].join(",")).join(" ");
+  el("polyline", { points: pts, fill: "none", stroke: COLORS[i % 3], "stroke-width": selected ? 7 : 4, "stroke-opacity": selected ? 0.9 : 0.45, "stroke-linejoin": "round", "stroke-linecap": "round", "pointer-events": "none" }, routeLayer);
+}
+
+function badge(txt, cls) { const s = document.createElement("span"); s.className = "badge " + cls; s.textContent = txt; return s; }
+function renderSignals() {
+  const rt = routes[sel], t = $("sigTable"); t.textContent = "";
+  const head = t.insertRow(); ["Signal","Axis","Arrive","Phase on arrival","Wait","Leave"].forEach(h => { const th = document.createElement("th"); th.textContent = h; head.appendChild(th); });
+  rt.signals.forEach(s => { const r = t.insertRow();
+    [s.intersection_id, s.approach_axis, "+" + Math.round(s.arrival_ts - rt.timeline[0].depart_ts) + " s"].forEach(v => { r.insertCell().textContent = v; });
+    r.insertCell().appendChild(badge(s.phase_on_arrival, s.phase_on_arrival === "GREEN" ? "b-green" : "b-red"));
+    r.insertCell().textContent = s.wait_s > 0 ? s.wait_s.toFixed(0) + " s" : "–";
+    r.insertCell().textContent = "+" + Math.round(s.departure_ts - rt.timeline[0].depart_ts) + " s"; });
+  if (!rt.signals.length) { const r = t.insertRow(); const c = r.insertCell(); c.colSpan = 6; c.textContent = "No signalized intersections on this route."; }
+  $("signalsCard").hidden = false;
+}
+
+function renderPriority() {
+  const p = result.priority, box = $("prio"); box.textContent = ""; $("prioCard").hidden = p.status === "NOT_APPLICABLE";
+  if (p.status === "NOT_APPLICABLE") return;
+  box.appendChild(badge(p.status.replaceAll("_", " "), p.status === "RECOMMENDED" ? "b-purple" : "b-gray"));
+  const n = document.createElement("p"); n.className = "small"; n.textContent = p.note || ""; box.appendChild(n);
+  if (p.status === "RECOMMENDED") {
+    const ul = document.createElement("ul");
+    (p.requests.length ? p.requests : []).forEach(r => { const li = document.createElement("li"); li.textContent = "Request green at " + r.intersection_id + " around +" + Math.round(r.expected_arrival_ts - result.depart_ts) + " s (would otherwise wait " + Math.round(r.expected_wait_without_priority_s) + " s)"; ul.appendChild(li); });
+    if (!p.requests.length) { const li = document.createElement("li"); li.textContent = "No waits expected on the fastest route; no requests needed."; ul.appendChild(li); }
+    box.appendChild(ul);
+    const e = document.createElement("div"); e.textContent = "ETA if all requests were granted: " + fmt(p.eta_s_if_all_granted) + " (saves " + Math.round(p.time_saved_s_if_all_granted) + " s). Advisory only."; box.appendChild(e);
+  }
+}
+
+function startAnim() {
+  if (!routes.length) return; const rt = routes[sel];
+  anim = { depart: rt.timeline[0].depart_ts, t0: performance.now(), speed: Number($("speed").value), rt };
+  vehicleEl.setAttribute("visibility", "visible");
+}
+function stepAnim() {
+  if (!anim) return; const tl = anim.rt.timeline, t = simNow();
+  const end = tl[tl.length - 1].arrive_ts;
+  let msg = "";
+  if (t >= end) { const [x, y] = pos[tl[tl.length-1].node_id]; vehicleEl.setAttribute("cx", x); vehicleEl.setAttribute("cy", y); $("animInfo").textContent = "Arrived after " + fmt(end - anim.depart) + " (simulated)."; anim = null; return; }
+  for (let i = 0; i < tl.length - 1; i++) {
+    const a = tl[i], b = tl[i+1];
+    if (t < a.depart_ts) { const [x, y] = pos[a.node_id]; vehicleEl.setAttribute("cx", x); vehicleEl.setAttribute("cy", y);
+      msg = "Waiting at " + a.node_id + " for green (" + Math.ceil(a.depart_ts - t) + " s)"; break; }
+    if (t < b.arrive_ts) { const f = (t - a.depart_ts) / (b.arrive_ts - a.depart_ts); const [x1,y1] = pos[a.node_id], [x2,y2] = pos[b.node_id];
+      vehicleEl.setAttribute("cx", x1 + (x2-x1)*f); vehicleEl.setAttribute("cy", y1 + (y2-y1)*f); msg = "Driving · +" + Math.round(t - anim.depart) + " s"; break; }
+  }
+  $("animInfo").textContent = msg + " (signals shown at simulated time)";
+}
+
+function paintSignals() {
+  const t = simNow();
+  for (const id in sigEls) { const s = sigState[id]; if (!s) continue; const e = sigEls[id];
+    e.v.setAttribute("fill", PCOL[phase(s, "NS", t)]); e.h.setAttribute("fill", PCOL[phase(s, "EW", t)]);
+    e.ring.setAttribute("stroke", s.fresh && s.level ? LCOL[s.level] : "#8a93a3"); }
+}
+
+async function poll() {
+  const r = await api("/api/state"); if (!r.ok) return;
+  serverTs0 = r.body.server_ts; perf0 = performance.now();
+  sigState = {}; let fresh = 0; r.body.signals.forEach(s => { sigState[s.id] = s; if (s.fresh) fresh++; });
+  const sim = r.body.simulator;
+  $("simToggle").textContent = sim.running ? "Pause sensors" : "Resume sensors";
+  $("dq").textContent = "Fresh telemetry at " + fresh + "/" + r.body.signals.length + " signals (older than 5 min is ignored). Sensors publish every " + sim.interval_s + " s.";
+  const a = r.body.aws || { enabled: false };
+  $("awsStatus").textContent = a.enabled
+    ? "AWS sync ON (" + a.region + "): audit records sent " + a.audit_sent + (a.audit_failed ? " (failed " + a.audit_failed + ")" : "") + " · sensor batches " + a.telemetry_batches + "/" + a.max_batches + (a.paused ? " (paused: limit reached)" : "") + (a.last_error ? " · last error: " + a.last_error : "")
+    : "AWS sync: off (local only)";
+  renderAudit(r.body.audit);
+}
+function renderAudit(rows) {
+  const t = $("audit"); t.textContent = "";
+  const h = t.insertRow(); ["Time","Role","Vehicle","From→To","ETA","Priority"].forEach(x => { const th = document.createElement("th"); th.textContent = x; h.appendChild(th); });
+  rows.forEach(a => { const r = t.insertRow();
+    [new Date(a.ts*1000).toLocaleTimeString(), String(a.user_sub||"").replace("local-",""), a.vehicle_type, a.origin + "→" + a.destination, fmt(a.fastest_eta_s), String(a.priority_status).replaceAll("_"," ")].forEach(v => { r.insertCell().textContent = v; }); });
+  if (!rows.length) { const r = t.insertRow(); const c = r.insertCell(); c.colSpan = 6; c.className = "muted"; c.textContent = "No requests yet."; }
+}
+async function refreshAudit() { await poll(); }
+
+async function init() {
+  VEHICLES.forEach(v => { const o = document.createElement("option"); o.value = v; o.textContent = v; $("vehicle").appendChild(o); });
+  const g = await api("/api/graph"); graph = g.body; drawMap(); await poll();
+  $("go").addEventListener("click", findRoutes);
+  $("clear").addEventListener("click", () => { origin = dest = null; clearResult(); drawMarks(); updateButtons(); $("hint").textContent = "Click a node on the map to set the origin (A), then another for the destination (B)."; });
+  $("swap").addEventListener("click", () => { [origin, dest] = [dest, origin]; drawMarks(); if (origin && dest) findRoutes(); });
+  $("anim").addEventListener("click", startAnim);
+  $("simToggle").addEventListener("click", async () => { const running = $("simToggle").textContent.startsWith("Pause") ? false : true;
+    await api("/api/simulator", { method: "POST", body: JSON.stringify({ running }) }); poll(); });
+  $("load").addEventListener("change", async () => { $("loadVal").textContent = $("load").value; await api("/api/simulator", { method: "POST", body: JSON.stringify({ load: Number($("load").value) }) }); });
+  setInterval(poll, 2000);
+  (function frame() { paintSignals(); stepAnim(); setTimeout(() => requestAnimationFrame(frame), 100); })();
+}
+init();
+</script>
+</body>
+</html>

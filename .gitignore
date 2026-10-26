@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+.venv/
+cdk.out/
+.env
+.env.*
+*.pem
+*.key
+*.crt
+cdk.context.json
+route.html

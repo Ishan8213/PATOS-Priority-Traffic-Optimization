@@ -1,4 +1,4 @@
-g#!/usr/bin/env python3
+#!/usr/bin/env python3
 """Start the local PATOS demo (no AWS needed):  python run_local.py  ->  http://127.0.0.1:8000"""
 import argparse
 import sys
